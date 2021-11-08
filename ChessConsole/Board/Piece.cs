@@ -9,7 +9,7 @@ namespace ChessConsole.Board
     /// [EN] Represents a chess piece.
     /// [PT] Representa uma peça de xadrez.
     /// </summary>
-    public class Piece
+    public abstract class Piece
     {
         #region Properties
         /// <summary>
@@ -30,12 +30,10 @@ namespace ChessConsole.Board
         /// [EN] Creates a new instance of the class Piece.
         /// [PT] Cria uma nova instância da classe Piece.
         /// </summary>
-        /// <param name="color"></param>
-        /// <param name="position"></param>
-        public Piece(PieceColor color, Position position)
+        /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
+        public Piece(PieceColor color)
         {
             Color = color;
-            Position = position;
         }
         #endregion Constructor
     }
