@@ -42,7 +42,7 @@ namespace ChessConsole.Board
         /// <param name="piece">[EN] Position to place the piece. [PT] Posição a se colocar a peça.</param>
         public void PlacePiece(Piece piece, Position position)
         {
-            if (position.Row >= Pieces.GetLength(0) || position.Column >= COLUMNS)
+            if (position.Row >= Pieces.GetLength(0) || position.Column >= Pieces.GetLength(1))
                 throw new ArgumentOutOfRangeException($"The given position is out of the board range. Please provide a position between row {Pieces.GetLength(0) - 1} and column {Pieces.GetLength(1) - 1}.");
 
             piece.Position = position;

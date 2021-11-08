@@ -16,7 +16,7 @@ namespace ChessConsole
             board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new Position(0, 2));
             board.PlacePiece(new Bishop(Board.Enums.PieceColor.Black), new Position(0, 3));
             board.PlacePiece(new Knight(Board.Enums.PieceColor.White), new Position(0, 4));
-            board.PlacePiece(new Pawn(Board.Enums.PieceColor.Black), new Position(0, 5));
+            board.PlacePiece(new Pawn(Board.Enums.PieceColor.Black), new Position(0, 7));
 
             Print.PrintBoard(board);
             
