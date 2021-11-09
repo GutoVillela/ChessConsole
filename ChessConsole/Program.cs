@@ -1,4 +1,5 @@
 ﻿using ChessConsole.Board;
+using ChessConsole.Board.Exceptions;
 using ChessConsole.Game;
 using ChessConsole.UI;
 using System;
@@ -9,16 +10,28 @@ namespace ChessConsole
     {
         static void Main(string[] args)
         {
-            ChessBoard board = new ChessBoard();
+            try
+            {
+                ChessBoard board = new ChessBoard();
+                ChessPosition pos = new ChessPosition('A', 2);
+                Console.WriteLine(pos);
+                Console.WriteLine(pos.ToPosition(ChessBoard.ROWS));
 
-            board.PlacePiece(new King(Board.Enums.PieceColor.White), new Position(0, 0));
-            board.PlacePiece(new Queen(Board.Enums.PieceColor.Black), new Position(0, 1));
-            board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new Position(0, 2));
-            board.PlacePiece(new Bishop(Board.Enums.PieceColor.Black), new Position(0, 3));
-            board.PlacePiece(new Knight(Board.Enums.PieceColor.White), new Position(0, 4));
-            board.PlacePiece(new Pawn(Board.Enums.PieceColor.Black), new Position(0, 7));
 
-            Print.PrintBoard(board);
+                //board.PlacePiece(new King(Board.Enums.PieceColor.White), new Position(0, 0));
+                //board.PlacePiece(new Queen(Board.Enums.PieceColor.Black), new Position(0, 1));
+                //board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new Position(0, 2));
+                //board.PlacePiece(new Bishop(Board.Enums.PieceColor.Black), new Position(0, 3));
+                //board.PlacePiece(new Knight(Board.Enums.PieceColor.White), new Position(0, 4));
+                //board.PlacePiece(new Pawn(Board.Enums.PieceColor.Black), new Position(0, 0));
+
+                //Print.PrintBoard(board);
+
+            }
+            catch (BoardException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             
         }
     }

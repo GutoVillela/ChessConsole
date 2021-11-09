@@ -5,8 +5,8 @@ using System.Text;
 namespace ChessConsole.Board
 {
     /// <summary>
-    /// [EN] Represents a piece position on the board.
-    /// [PT] Representa a posição de uma peça no tabuleiro.
+    /// [EN] Represents a piece position on the board using computer notation.
+    /// [PT] Representa a posição de uma peça no tabuleiro usando a notação de computador.
     /// </summary>
     public class Position
     {
