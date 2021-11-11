@@ -1,5 +1,6 @@
 ﻿using System;
 using ChessConsole.Board;
+using ChessConsole.Board.Enums;
 
 namespace ChessConsole.UI
 {
@@ -14,7 +15,7 @@ namespace ChessConsole.UI
         /// [EN] Piece's placeholder.
         /// [PT] Placeholder da peça (caractere a ser impresso nas casas do tabuleiro sem peças)
         /// </summary>
-        public const char PIECE_PLACEHOLDER = '-';
+        private const char PIECE_PLACEHOLDER = '-';
         #endregion Constants
 
         #region Methods
@@ -22,7 +23,7 @@ namespace ChessConsole.UI
         /// [EN] Prints the board to the console.
         /// [PT] Imprime o tabuleiro no console.
         /// </summary>
-        /// <param name="board"></param>
+        /// <param name="board">[EN] Board to be printed. [PT] Tabuleiro a ser impresso.</param>
         public static void PrintBoard(ChessBoard board)
         {
             if (board is null)
@@ -30,21 +31,72 @@ namespace ChessConsole.UI
                 throw new ArgumentNullException(nameof(board));
             }
 
-            for (int i = 0; i < board.Pieces.GetLength(0); i++)
+            for (int i = 0; i < ChessBoard.ROWS; i++)
             {
-                for (int j = 0; j < board.Pieces.GetLength(1); j++)
+                Console.Write(ChessBoard.ROWS - i + " ");
+
+                for (int j = 0; j < ChessBoard.COLUMNS; j++)
                 {
-                    if (board.Pieces[i, j] is null)
+                    Position position = new Position(i, j);
+
+                    if (!board.ExistsPiece(position))
                         Console.Write(PIECE_PLACEHOLDER + " ");
                     else
-                        Console.Write(board.Pieces[i, j] + " ");
+                    {
+                        PrintPiece(board.GetPiece(position));
+                        Console.Write(" ");
+                    }
                 }
 
                 // [EN] Print a new line on each line of the board
                 // [PT] Imprimir uma linha em branco em cada linha do tabuleiro
                 Console.WriteLine();
             }
+
+            Console.Write("  ");
+
+            for (int i = 0; i < ChessBoard.COLUMNS; i++)
+            {
+                char column = (char)('A' + i);
+                Console.Write(column + " ");
+            }
+
+            Console.WriteLine();
         }
+
+        /// <summary>
+        /// [EN] Reads a new chess position from user input.
+        /// [PT] Lê uma posição de xadrez via input do usuário.
+        /// </summary>
+        /// <returns>[EN] ChessPosition entered by user. [PT] Posição de xadrez inserida pelo usuário.</returns>
+        public static ChessPosition ReadChessPosition()
+        {
+            string input = Console.ReadLine();
+            char column = input[0];
+            int row = Convert.ToInt32(input[1].ToString());
+            return new ChessPosition(column, row);
+        }
+
+        /// <summary>
+        /// [EN] Prints the piece to the console.
+        /// [PT] Imprime a peça no console.
+        /// </summary>
+        /// <param name="piece"></param>
+        private static void PrintPiece(Piece piece)
+        {
+            if(piece.Color == PieceColor.White)
+                Console.Write(piece);
+            else
+            {
+                // [EN] Print black pieces in yellow
+                // [PT] Imprimir peças pretas em amarelo
+                ConsoleColor aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(piece);
+                Console.ForegroundColor = aux;
+            }
+        }
+
         #endregion Methods
     }
 }

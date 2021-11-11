@@ -10,7 +10,7 @@ namespace ChessConsole.Board
     /// [EN] Represents a piece position on the board using chess notation.
     /// [PT] Representa a posição de uma peça no tabuleiro usando a notação de xadrez.
     /// </summary>
-    internal class ChessPosition
+    public class ChessPosition
     {
         #region Properties
         /// <summary>
@@ -44,7 +44,7 @@ namespace ChessConsole.Board
         #region Methods
         public override string ToString()
         {
-            return String.Concat(Column, Row);
+            return string.Concat(Column, Row);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using ChessConsole.Board.Exceptions;
+using ChessConsole.Game;
 
 namespace ChessConsole.Board
 {
@@ -27,17 +28,42 @@ namespace ChessConsole.Board
         /// [EN] Pieces positioned on the board.
         /// [PT] Peças posicionadas no tabuleiro.
         /// </summary>
-        public Piece[,] Pieces { get; private set; } = new Piece[ROWS, COLUMNS];
+        private Piece[,] Pieces { get; set; } = new Piece[ROWS, COLUMNS];
 
         #endregion Properties
 
+        #region Constructor
+        /// <summary>
+        /// [EN] Creates a new instance of the class ChessBoard.
+        /// [PT] Cria uma nova instância da classe ChessBoard.
+        /// </summary>
+        public ChessBoard()
+        {
+            ResetPieces();
+        }
+        #endregion Constructor
+
         #region Methods
+        /// <summary>
+        /// [EN] Gets the piece in the given position.
+        /// [PT] Obtém a peça na posição indicada.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public Piece GetPiece(Position position)
+        {
+            if (!ExistsPiece(position))
+                throw new BoardException($"There's no piece in the position {position}.");
+
+            return Pieces[position.Row, position.Column]; 
+        }
+
         /// <summary>
         /// [EN] Places a piece on the board at the given position.
         /// [PT] Posiciona uma peça no tabuleiro na posição indicada.
         /// </summary>
         /// <param name="piece">[EN] Piece to be placed. [PT] Peça a ser posicionada.</param>
-        /// <param name="piece">[EN] Position to place the piece. [PT] Posição a se colocar a peça.</param>
+        /// <param name="position">[EN] Position to place the piece. [PT] Posição a se colocar a peça.</param>
         public void PlacePiece(Piece piece, Position position)
         {
             ValidatePosition(position);
@@ -47,6 +73,67 @@ namespace ChessConsole.Board
 
             piece.Position = position;
             Pieces[position.Row, position.Column] = piece;
+        }
+
+        /// <summary>
+        /// [EN] Removes a piece on the board at the given position.
+        /// [PT] Remove uma peça no tabuleiro na posição indicada.
+        /// </summary>
+        /// <param name="position">[EN] Piece's position. [PT] Posição atual da peça.</param>
+        /// <returns>[EN] Returns the removed piece or null if there was no piece. [PT] Retorna a peça removida ou null caso não exista peça.</returns>
+        public Piece RemovePiece(Position position)
+        {
+            if(!ExistsPiece(position))
+                return null;
+
+            Piece piece = Pieces[position.Row,position.Column];
+            piece.Position = null;
+            Pieces[position.Row, position.Column] = null;
+            return piece;
+        }
+
+        /// <summary>
+        /// [EN] Clear and resets all the pieces' position. [PT] Limpa e reseta a posição de todas as peças.
+        /// </summary>
+        public void ResetPieces()
+        {
+            Pieces = new Piece[ROWS, COLUMNS];
+
+            // [EN] Place white pieces. [PT] Posicionar peças brancas
+            PlacePiece(new Rook(Enums.PieceColor.White), new ChessPosition('A', 1).ToPosition(ROWS));
+            PlacePiece(new Knight(Enums.PieceColor.White), new ChessPosition('B', 1).ToPosition(ROWS));
+            PlacePiece(new Bishop(Enums.PieceColor.White), new ChessPosition('C', 1).ToPosition(ROWS));
+            PlacePiece(new Queen(Enums.PieceColor.White), new ChessPosition('D', 1).ToPosition(ROWS));
+            PlacePiece(new King(Enums.PieceColor.White), new ChessPosition('E', 1).ToPosition(ROWS));
+            PlacePiece(new Bishop(Enums.PieceColor.White), new ChessPosition('F', 1).ToPosition(ROWS));
+            PlacePiece(new Knight(Enums.PieceColor.White), new ChessPosition('G', 1).ToPosition(ROWS));
+            PlacePiece(new Rook(Enums.PieceColor.White), new ChessPosition('H', 1).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('A', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('B', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('C', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('D', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('E', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('F', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('G', 2).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.White), new ChessPosition('H', 2).ToPosition(ROWS));
+
+            // [EN] Place black pieces. [PT] Posicionar peças pretas.
+            PlacePiece(new Rook(Enums.PieceColor.Black), new ChessPosition('A', 8).ToPosition(ROWS));
+            PlacePiece(new Knight(Enums.PieceColor.Black), new ChessPosition('B', 8).ToPosition(ROWS));
+            PlacePiece(new Bishop(Enums.PieceColor.Black), new ChessPosition('C', 8).ToPosition(ROWS));
+            PlacePiece(new Queen(Enums.PieceColor.Black), new ChessPosition('D', 8).ToPosition(ROWS));
+            PlacePiece(new King(Enums.PieceColor.Black), new ChessPosition('E', 8).ToPosition(ROWS));
+            PlacePiece(new Bishop(Enums.PieceColor.Black), new ChessPosition('F', 8).ToPosition(ROWS));
+            PlacePiece(new Knight(Enums.PieceColor.Black), new ChessPosition('G', 8).ToPosition(ROWS));
+            PlacePiece(new Rook(Enums.PieceColor.Black), new ChessPosition('H', 8).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('A', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('B', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('C', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('D', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('E', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('F', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('G', 7).ToPosition(ROWS));
+            PlacePiece(new Pawn(Enums.PieceColor.Black), new ChessPosition('H', 7).ToPosition(ROWS));
         }
 
         /// <summary>
@@ -66,7 +153,7 @@ namespace ChessConsole.Board
         /// </summary>
         /// <param name="position">[EN] Position to check. [PT] Posição para verificar.</param>
         /// <returns>[EN] True if there's a piece or false if there's not. [PT] Verdadeiro se houver uma peça ou falso se não houver.</returns>
-        private bool ExistsPiece(Position position)
+        public bool ExistsPiece(Position position)
         {
             ValidatePosition(position);
             return Pieces[position.Row, position.Column] != null;

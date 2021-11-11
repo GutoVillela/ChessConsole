@@ -12,20 +12,28 @@ namespace ChessConsole
         {
             try
             {
-                ChessBoard board = new ChessBoard();
-                ChessPosition pos = new ChessPosition('A', 2);
-                Console.WriteLine(pos);
-                Console.WriteLine(pos.ToPosition(ChessBoard.ROWS));
+                Match match = new Match();
 
+                do
+                {
+                    Console.Clear();
+                    Print.PrintBoard(match.Board);
 
-                //board.PlacePiece(new King(Board.Enums.PieceColor.White), new Position(0, 0));
-                //board.PlacePiece(new Queen(Board.Enums.PieceColor.Black), new Position(0, 1));
-                //board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new Position(0, 2));
-                //board.PlacePiece(new Bishop(Board.Enums.PieceColor.Black), new Position(0, 3));
-                //board.PlacePiece(new Knight(Board.Enums.PieceColor.White), new Position(0, 4));
-                //board.PlacePiece(new Pawn(Board.Enums.PieceColor.Black), new Position(0, 0));
+                    Console.WriteLine();
 
-                //Print.PrintBoard(board);
+                    Console.Write("Choose a piece position: ");
+                    Position fromPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
+
+                    if (!match.Board.ExistsPiece(fromPosition))
+                        continue;
+
+                    Console.Write("Enter a new position: ");
+                    Position toPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
+
+                    match.MovePiece(match.Board.GetPiece(fromPosition), toPosition);
+
+                }
+                while (!match.IsFinished);
 
             }
             catch (BoardException ex)
