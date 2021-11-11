@@ -29,6 +29,11 @@ namespace ChessConsole.Game
         {
             return "D";
         }
+
+        public override bool[,] PossibleMoves(ChessBoard board)
+        {
+            throw new NotImplementedException();
+        }
         #endregion Methods
     }
 }

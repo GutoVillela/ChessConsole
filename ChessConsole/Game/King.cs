@@ -29,6 +29,44 @@ namespace ChessConsole.Game
         {
             return "R";
         }
+
+        public override bool[,] PossibleMoves(ChessBoard board)
+        {
+            bool[,] possibleMoves = new bool[ChessBoard.ROWS, ChessBoard.COLUMNS];
+            Position position;
+
+            // [EN] Check all positions adjacent to the King. [PT] Checar todas as posições adjacentes ao rei
+            position = new Position(Position.Row - 1, Position.Column);
+            if(board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new Position(Position.Row - 1, Position.Column + 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+            
+            position = new Position(Position.Row, Position.Column + 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new Position(Position.Row + 1, Position.Column + 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new Position(Position.Row + 1, Position.Column - 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new Position(Position.Row, Position.Column - 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new Position(Position.Row - 1, Position.Column - 1);
+            if (board.CheckPosition(position) && IsMoveAllowed(board, position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            return possibleMoves;
+        }
+        
         #endregion Methods
     }
 }

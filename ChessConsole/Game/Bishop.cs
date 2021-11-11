@@ -22,12 +22,18 @@ namespace ChessConsole.Game
         {
 
         }
+
         #endregion Constructor
 
         #region Methods
         public override string ToString()
         {
             return "B";
+        }
+
+        public override bool[,] PossibleMoves(ChessBoard board)
+        {
+            throw new NotImplementedException();
         }
         #endregion Methods
     }

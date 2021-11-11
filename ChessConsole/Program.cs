@@ -13,6 +13,7 @@ namespace ChessConsole
             try
             {
                 Match match = new Match();
+                match.Board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
@@ -26,6 +27,11 @@ namespace ChessConsole
 
                     if (!match.Board.ExistsPiece(fromPosition))
                         continue;
+
+                    Console.Clear();
+                    bool [,] possibleMoves = match.Board.GetPiece(fromPosition).PossibleMoves(match.Board);
+
+                    Print.PrintBoard(match.Board, possibleMoves);
 
                     Console.Write("Enter a new position: ");
                     Position toPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);

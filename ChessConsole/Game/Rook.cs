@@ -29,6 +29,72 @@ namespace ChessConsole.Game
         {
             return "T";
         }
+
+        public override bool[,] PossibleMoves(ChessBoard board)
+        {
+            bool[,] possibleMoves = new bool[ChessBoard.ROWS, ChessBoard.COLUMNS];
+            
+            Position position;
+
+            // [EN] Check positions above. [PT] Checar posições acima.
+            position = new Position(Position.Row - 1, Position.Column);
+            while(board.CheckPosition(position) && IsMoveAllowed(board, position))
+            {
+                possibleMoves[position.Row, position.Column] = true;
+
+                // [EN] Finish while when we find the first adversary piece on the allowed position
+                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                    break;
+
+                position.Row--;
+            }
+
+            // [EN] Check positions below. [PT] Checar posições abaixo
+            position = new Position(Position.Row + 1, Position.Column);
+            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            {
+                possibleMoves[position.Row, position.Column] = true;
+
+                // [EN] Finish while when we find the first adversary piece on the allowed position
+                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                    break;
+
+                position.Row++;
+            }
+
+            // [EN] Check right positions. [PT] Checar posições à direita
+            position = new Position(Position.Row, Position.Column + 1);
+            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            {
+                possibleMoves[position.Row, position.Column] = true;
+
+                // [EN] Finish while when we find the first adversary piece on the allowed position
+                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                    break;
+
+                position.Column++;
+            }
+
+            // [EN] Check left positions. [PT] Checar posições à esquerda
+            position = new Position(Position.Row, Position.Column + 1);
+            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            {
+                possibleMoves[position.Row, position.Column] = true;
+
+                // [EN] Finish while when we find the first adversary piece on the allowed position
+                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                    break;
+
+                position.Column++;
+            }
+
+
+            return possibleMoves;
+        }
         #endregion Methods
     }
 }

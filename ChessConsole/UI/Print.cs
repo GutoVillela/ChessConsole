@@ -37,14 +37,14 @@ namespace ChessConsole.UI
 
                 for (int j = 0; j < ChessBoard.COLUMNS; j++)
                 {
-                    Position position = new Position(i, j);
+                    Position position = new(i, j);
 
                     if (!board.ExistsPiece(position))
                         Console.Write(PIECE_PLACEHOLDER + " ");
                     else
                     {
                         PrintPiece(board.GetPiece(position));
-                        Console.Write(" ");
+                        
                     }
                 }
 
@@ -53,6 +53,70 @@ namespace ChessConsole.UI
                 Console.WriteLine();
             }
 
+            Console.WriteLine();
+            Console.Write("  ");
+
+            for (int i = 0; i < ChessBoard.COLUMNS; i++)
+            {
+                char column = (char)('A' + i);
+                Console.Write(column + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// [EN] Prints the board to the console and highlight the indicated positions.
+        /// [PT] Imprime o tabuleiro no console e destava as posições marcadas.
+        /// </summary>
+        /// <param name="board">[EN] Board to be printed. [PT] Tabuleiro a ser impresso.</param>
+        /// <param name="highlightPositions">[EN] Board positions to be highlighted. [PT] Posições do tabuleiro a serem destacadas.</param>
+        public static void PrintBoard(ChessBoard board, bool[,] highlightPositions)
+        {
+            if (board is null)
+            {
+                throw new ArgumentNullException(nameof(board));
+            }
+
+            if(highlightPositions is null)
+            {
+                throw new ArgumentNullException(nameof(highlightPositions));
+            }
+
+            if(ChessBoard.ROWS != highlightPositions.GetLength(0) || ChessBoard.COLUMNS != highlightPositions.GetLength(1))
+            {
+                throw new ArgumentException("The given matrix must have the same size as the ChessBoard.");
+            }
+
+            ConsoleColor originalColor = Console.BackgroundColor;
+            ConsoleColor highlightColor = ConsoleColor.DarkGray;
+
+            for (int i = 0; i < ChessBoard.ROWS; i++)
+            {
+                Console.Write(ChessBoard.ROWS - i + " ");
+
+                for (int j = 0; j < ChessBoard.COLUMNS; j++)
+                {
+                    Console.BackgroundColor = highlightPositions[i, j] ? highlightColor : originalColor;
+
+                    Position position = new(i, j);
+
+                    if (!board.ExistsPiece(position))
+                        Console.Write(PIECE_PLACEHOLDER + " ");
+                    else
+                    {
+                        PrintPiece(board.GetPiece(position));
+                    }
+
+                    Console.BackgroundColor = originalColor;
+                }
+
+                // [EN] Print a new line on each line of the board
+                // [PT] Imprimir uma linha em branco em cada linha do tabuleiro
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
             Console.Write("  ");
 
             for (int i = 0; i < ChessBoard.COLUMNS; i++)
@@ -81,19 +145,27 @@ namespace ChessConsole.UI
         /// [EN] Prints the piece to the console.
         /// [PT] Imprime a peça no console.
         /// </summary>
-        /// <param name="piece"></param>
+        /// <param name="piece">[EN] Piece to print. [PT] Peça a imprimir.</param>
         private static void PrintPiece(Piece piece)
         {
-            if(piece.Color == PieceColor.White)
-                Console.Write(piece);
+            if (piece is null)
+            {
+                Console.Write(PIECE_PLACEHOLDER + " ");
+            }
             else
             {
-                // [EN] Print black pieces in yellow
-                // [PT] Imprimir peças pretas em amarelo
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(piece);
-                Console.ForegroundColor = aux;
+                if (piece.Color == PieceColor.White)
+                    Console.Write(piece + " ");
+                else
+                {
+                    // [EN] Print black pieces in yellow
+                    // [PT] Imprimir peças pretas em amarelo
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(piece);
+                    Console.ForegroundColor = aux;
+                    Console.Write(" ");
+                }
             }
         }
 
