@@ -15,13 +15,13 @@ namespace ChessConsole.Board
         /// [EN] Row where the piece is on the board.
         /// [PT] Linha onde a peça está no tabuleiro.
         /// </summary>
-        public int Row { get; set; }
+        public byte Row { get; set; }
 
         /// <summary>
         /// [EN] Column where the piece is on the board.
         /// [PT] Coluna onde a peça está no tabuleiro.
         /// </summary>
-        public int Column { get; set; }
+        public byte Column { get; set; }
         #endregion Properties
 
         #region Constructor
@@ -31,7 +31,7 @@ namespace ChessConsole.Board
         /// </summary>
         /// <param name="row">[EN] Row where the piece is on the board. [PT] Linha onde a peça está no tabuleiro.</param>
         /// <param name="column">[EN] Column where the piece is on the board. [PT] Coluna onde a peça está no tabuleiro.</param>
-        public Position(int row, int column)
+        public Position(byte row, byte column)
         {
             Row = row;
             Column = column;

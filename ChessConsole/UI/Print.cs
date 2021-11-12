@@ -31,11 +31,11 @@ namespace ChessConsole.UI
                 throw new ArgumentNullException(nameof(board));
             }
 
-            for (int i = 0; i < ChessBoard.ROWS; i++)
+            for (byte i = 0; i < ChessBoard.ROWS; i++)
             {
                 Console.Write(ChessBoard.ROWS - i + " ");
 
-                for (int j = 0; j < ChessBoard.COLUMNS; j++)
+                for (byte j = 0; j < ChessBoard.COLUMNS; j++)
                 {
                     Position position = new(i, j);
 
@@ -91,11 +91,11 @@ namespace ChessConsole.UI
             ConsoleColor originalColor = Console.BackgroundColor;
             ConsoleColor highlightColor = ConsoleColor.DarkGray;
 
-            for (int i = 0; i < ChessBoard.ROWS; i++)
+            for (byte i = 0; i < ChessBoard.ROWS; i++)
             {
                 Console.Write(ChessBoard.ROWS - i + " ");
 
-                for (int j = 0; j < ChessBoard.COLUMNS; j++)
+                for (byte j = 0; j < ChessBoard.COLUMNS; j++)
                 {
                     Console.BackgroundColor = highlightPositions[i, j] ? highlightColor : originalColor;
 
@@ -137,7 +137,7 @@ namespace ChessConsole.UI
         {
             string input = Console.ReadLine();
             char column = input[0];
-            int row = Convert.ToInt32(input[1].ToString());
+            byte row = Convert.ToByte(input[1].ToString());
             return new ChessPosition(column, row);
         }
 
@@ -154,7 +154,7 @@ namespace ChessConsole.UI
             }
             else
             {
-                if (piece.Color == PieceColor.White)
+                if (piece.Color == Color.White)
                     Console.Write(piece + " ");
                 else
                 {

@@ -1,4 +1,5 @@
 ﻿using ChessConsole.Board.Enums;
+using ChessConsole.Board.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,7 @@ namespace ChessConsole.Board
         /// [EN] Piece color.
         /// [PT] Cor da peça.
         /// </summary>
-        public PieceColor Color { get; set; }
+        public Color Color { get; set; }
 
         /// <summary>
         /// [EN] Piece position on the board.
@@ -38,7 +39,7 @@ namespace ChessConsole.Board
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
         /// <param name="board">[EN] Board associated to the piece. [PT] abuleiro associado à peça.</param>
-        public Piece(PieceColor color, ChessBoard board)
+        public Piece(Color color, ChessBoard board)
         {
             Color = color;
             Board = board;
@@ -78,6 +79,21 @@ namespace ChessConsole.Board
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// [EN] Checks if the given position is contained in the piece possible moves.
+        /// [PT] Verifica se a posição fornecida está contida nas posições possíveis da peça.
+        /// </summary>
+        /// <param name="pos">[EN] Position to be validates. [PT] Posição para ser validada.</param>
+        /// <returns>[EN] True if there the move is possible and false otherwise. [PT] True caso movimento seja possível e false caso contrário.</returns>
+        public bool IsMovePossible(Position position)
+        {
+            bool [,] possibleMoves = PossibleMoves();
+            if (position.Row > possibleMoves.GetLength(0) || position.Column > possibleMoves.GetLength(1))
+                throw new BoardException("The given position doesn't exist on the board!");
+
+            return possibleMoves[position.Row, position.Column];
         }
 
         /// <summary>

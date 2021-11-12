@@ -13,33 +13,45 @@ namespace ChessConsole
             try
             {
                 Match match = new();
-                match.Board.PlacePiece(new Rook(Board.Enums.PieceColor.White, match.Board), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
-                    Console.Clear();
-                    Print.PrintBoard(match.Board);
+                    try
+                    {
+                        Console.Clear();
+                        Print.PrintBoard(match.Board);
 
-                    Console.WriteLine();
+                        Console.WriteLine();
 
-                    Console.WriteLine($"Turn {match.Turn}.");
-                    Console.WriteLine($"Player {match.CurrentPlayer}.");
+                        Console.WriteLine($"Turn {match.Turn}.");
+                        Console.WriteLine($"Player {match.CurrentPlayer}.");
 
-                    Console.Write("Choose a piece position: ");
-                    Position fromPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
+                        Console.Write("Choose a piece position: ");
+                        Position fromPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
 
-                    if (!match.Board.ExistsPiece(fromPosition))
-                        continue;
+                        match.ValidateFromPosition(fromPosition);
 
-                    Console.Clear();
-                    bool [,] possibleMoves = match.Board.GetPiece(fromPosition).PossibleMoves();
+                        if (!match.Board.ExistsPiece(fromPosition))
+                            continue;
 
-                    Print.PrintBoard(match.Board, possibleMoves);
+                        Console.Clear();
+                        bool [,] possibleMoves = match.Board.GetPiece(fromPosition).PossibleMoves();
 
-                    Console.Write("Enter a new position: ");
-                    Position toPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
+                        Print.PrintBoard(match.Board, possibleMoves);
 
-                    match.PerformMovement(match.Board.GetPiece(fromPosition), toPosition);
+                        Console.Write("Enter a new position: ");
+                        Position toPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
+
+                        match.ValidateToPosition(match.Board.GetPiece(fromPosition), toPosition);
+
+                        match.PerformMovement(match.Board.GetPiece(fromPosition), toPosition);
+                    }
+                    catch(BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
 
                 }
                 while (!match.IsFinished);

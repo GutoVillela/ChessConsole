@@ -19,7 +19,7 @@ namespace ChessConsole.Game
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
         /// <param name="board">[EN] Board associated to the piece. [PT] Tabuleiro associado à peça.</param>
-        public King(PieceColor color, ChessBoard board) : base(color, board)
+        public King(Color color, ChessBoard board) : base(color, board)
         {
 
         }
@@ -37,31 +37,31 @@ namespace ChessConsole.Game
             Position position;
 
             // [EN] Check all positions adjacent to the King. [PT] Checar todas as posições adjacentes ao rei
-            position = new Position(Position.Row - 1, Position.Column);
+            position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
             if(Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row - 1, Position.Column + 1);
+            position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column + 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
             
-            position = new Position(Position.Row, Position.Column + 1);
+            position = new Position(Position.Row, Convert.ToByte(Position.Column + 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row + 1, Position.Column + 1);
+            position = new Position(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column + 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row + 1, Position.Column - 1);
+            position = new Position(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column - 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row, Position.Column - 1);
+            position = new Position(Position.Row, Convert.ToByte(Position.Column - 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row - 1, Position.Column - 1);
+            position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column - 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 

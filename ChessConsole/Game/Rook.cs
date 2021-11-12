@@ -19,7 +19,7 @@ namespace ChessConsole.Game
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
         /// <param name="board">[EN] Board associated to the piece. [PT] Tabuleiro associado à peça.</param>
-        public Rook(PieceColor color, ChessBoard board) : base(color, board)
+        public Rook(Color color, ChessBoard board) : base(color, board)
         {
 
         }
@@ -38,7 +38,7 @@ namespace ChessConsole.Game
             Position position;
 
             // [EN] Check positions above. [PT] Checar posições acima.
-            position = new Position(Position.Row - 1, Position.Column);
+            position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
             while(Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
@@ -52,7 +52,7 @@ namespace ChessConsole.Game
             }
 
             // [EN] Check positions below. [PT] Checar posições abaixo
-            position = new Position(Position.Row + 1, Position.Column);
+            position = new Position(Convert.ToByte(Position.Row + 1), Position.Column);
             while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
@@ -66,7 +66,7 @@ namespace ChessConsole.Game
             }
 
             // [EN] Check right positions. [PT] Checar posições à direita
-            position = new Position(Position.Row, Position.Column + 1);
+            position = new Position(Position.Row, Convert.ToByte(Position.Column + 1));
             while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
@@ -80,7 +80,7 @@ namespace ChessConsole.Game
             }
 
             // [EN] Check left positions. [PT] Checar posições à esquerda
-            position = new Position(Position.Row, Position.Column + 1);
+            position = new Position(Position.Row, Convert.ToByte(Position.Column + 1));
             while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;

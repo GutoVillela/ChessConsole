@@ -19,7 +19,7 @@ namespace ChessConsole.Game
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
         /// <param name="board">[EN] Board associated to the piece. [PT] Tabuleiro associado à peça.</param>
-        public Queen(PieceColor color, ChessBoard board) : base(color, board)
+        public Queen(Color color, ChessBoard board) : base(color, board)
         {
 
         }

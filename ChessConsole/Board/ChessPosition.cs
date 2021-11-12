@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessConsole.Board.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace ChessConsole.Board
         /// [EN] Row where the piece is on the board.
         /// [PT] Linha onde a peça está no tabuleiro.
         /// </summary>
-        public int Row { get; set; }
+        public byte Row { get; set; }
 
         #endregion Properties
 
@@ -34,7 +35,7 @@ namespace ChessConsole.Board
         /// </summary>
         /// <param name="row">[EN] Row where the piece is on the board. [PT] Linha onde a peça está no tabuleiro.</param>
         /// <param name="column">[EN] Column where the piece is on the board. [PT] Coluna onde a peça está no tabuleiro.</param>
-        public ChessPosition(char column, int row)
+        public ChessPosition(char column, byte row)
         {
             Column = column;
             Row = row;
@@ -53,9 +54,15 @@ namespace ChessConsole.Board
         /// </summary>
         /// <param name="row">[EN] Size of the board row. [PT] Tamanho da linha do tabuleiro.</param>
         /// <returns></returns>
-        public Position ToPosition(int boardRowSize)
+        public Position ToPosition(byte boardRowSize)
         {
-            return new Position(row: boardRowSize - Row, column: Column - 'A');
+            if (!byte.TryParse((boardRowSize - Row).ToString(), out byte row))
+                throw new BoardException("Invalid row position");
+
+            if(!byte.TryParse((Column - 'A').ToString(), out byte column))
+                throw new BoardException("Invalid column position");
+
+            return new Position(row: row, column: column);
         }
         #endregion Methods
     }

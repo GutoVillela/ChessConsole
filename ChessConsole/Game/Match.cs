@@ -1,5 +1,6 @@
 ﻿using ChessConsole.Board;
-using ChessConsole.Game.Enums;
+using ChessConsole.Board.Enums;
+using ChessConsole.Board.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace ChessConsole.Game
         /// [EN] Current turn player.
         /// [PT] Jogador do turno atual.
         /// </summary>
-        public PlayerColor CurrentPlayer { get; private set; }
+        public Color CurrentPlayer { get; private set; }
 
         /// <summary>
         /// [EN] Defines if the match is finished.
@@ -49,7 +50,7 @@ namespace ChessConsole.Game
         {
             Board = new ChessBoard();
             Turn = 1;
-            CurrentPlayer = PlayerColor.White;
+            CurrentPlayer = Color.White;
         }
         #endregion Constructor
 
@@ -82,15 +83,54 @@ namespace ChessConsole.Game
         }
 
         /// <summary>
+        /// [EN] Validates if player has choosen a valid from position. [PT] Valida se jogador selecionou uma posição de origem válida.
+        /// </summary>
+        /// <param name="position">[EN] Position to be validated. [PT] Posição para ser validada.</param>
+        public void ValidateFromPosition(Position position)
+        {
+            if(position is null)
+                throw new ArgumentNullException(nameof(position));
+
+            if (!Board.CheckPosition(position))
+                throw new BoardException("The chosen position doesn't exist on the board.");
+
+            if(!Board.ExistsPiece(position))
+                throw new BoardException("The chosen position doesn't have a piece on it.");
+
+            if(Board.GetPiece(position).Color != CurrentPlayer)
+                throw new BoardException("The chosen piece doens't belong to current player.");
+
+            if(!Board.GetPiece(position).AnyPossibleMove())
+                throw new BoardException("There is no possible move to the chosen piece. Please select another piece.");
+        }
+
+        /// <summary>
+        /// [EN] Validates if player has choosen a valid to position. [PT] Valida se jogador selecionou uma posição de destino válida.
+        /// </summary>
+        /// <param name="piece">[EN] Position to be validated. [PT] Posição para ser validada.</param>
+        /// <param name="position">[EN] Position to be validated. [PT] Posição para ser validada.</param>
+        public void ValidateToPosition(Piece piece, Position position)
+        {
+            if (piece is null)
+                throw new ArgumentNullException(nameof(piece));
+
+            if (position is null)
+                throw new ArgumentNullException(nameof(position));
+
+            if (!piece.IsMovePossible(position))
+                throw new BoardException("The chosen movement is not possible to this piece.");
+        }
+
+        /// <summary>
         /// [EN] Change current player.
         /// [PT] Muda jogador atual.
         /// </summary>
         private void ChangePlayer()
         {
-            if(CurrentPlayer == PlayerColor.White)
-                CurrentPlayer = PlayerColor.Black;
+            if(CurrentPlayer == Color.White)
+                CurrentPlayer = Color.Black;
             else
-                CurrentPlayer = PlayerColor.White;
+                CurrentPlayer = Color.White;
         }
         #endregion Methods
     }
