@@ -20,12 +20,7 @@ namespace ChessConsole
                     try
                     {
                         Console.Clear();
-                        Print.PrintBoard(match.Board);
-
-                        Console.WriteLine();
-
-                        Console.WriteLine($"Turn {match.Turn}.");
-                        Console.WriteLine($"Player {match.CurrentPlayer}.");
+                        Print.PrintMatch(match);
 
                         Console.Write("Choose a piece position: ");
                         Position fromPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);

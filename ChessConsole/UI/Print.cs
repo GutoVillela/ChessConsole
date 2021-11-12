@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using ChessConsole.Board;
 using ChessConsole.Board.Enums;
+using ChessConsole.Game;
 
 namespace ChessConsole.UI
 {
@@ -19,6 +21,21 @@ namespace ChessConsole.UI
         #endregion Constants
 
         #region Methods
+        /// <summary>
+        /// [EN] Prints the chess match. [PT] Imprime a partida de xadrez.
+        /// </summary>
+        /// <param name="match">[EN] Match to be printed. [PT] Partida a ser impressa.</param>
+        public static void PrintMatch(Match match)
+        {
+            Print.PrintBoard(match.Board);
+            Console.WriteLine($"Turn {match.Turn}.");
+            Console.WriteLine($"Player {match.CurrentPlayer}.");
+
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine();
+        }
+
         /// <summary>
         /// [EN] Prints the board to the console.
         /// [PT] Imprime o tabuleiro no console.
@@ -139,6 +156,39 @@ namespace ChessConsole.UI
             char column = input[0];
             byte row = Convert.ToByte(input[1].ToString());
             return new ChessPosition(column, row);
+        }
+
+        /// <summary>
+        /// [EN] Prints the captured pieces from the match. [PT] Imprime as peças capturadas da partida.
+        /// </summary>
+        /// <param name="match">[EN] Match. [PT] Partida.</param>
+        public static void PrintCapturedPieces(Match match)
+        {
+            Console.WriteLine("Captured pieces.");
+            Console.Write("White's: ");
+            PrintPiecesHashSet(match.GetCapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black's: ");
+
+            ConsoleColor consoleColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintPiecesHashSet(match.GetCapturedPieces(Color.Black));
+            Console.ForegroundColor = consoleColor; 
+
+        }
+
+        /// <summary>
+        /// [EN] Prints pieces hashset. [PT] Imprime o hashset de peças.
+        /// </summary>
+        /// <param name="capturedPieces">[EN] Pieces to be printed. [PT] Peças a serem impressas.</param>
+        private static void PrintPiecesHashSet(HashSet<Piece> capturedPieces)
+        {
+            Console.Write("[");
+            foreach (Piece piece in capturedPieces)
+            {
+                Console.Write(piece + " ");
+            }
+            Console.Write("]");
         }
 
         /// <summary>

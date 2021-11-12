@@ -13,7 +13,7 @@ namespace ChessConsole.Game
     /// [EN] Represents the chess match.
     /// [PT] Representa a partida de xadrez.
     /// </summary>
-    internal class Match
+    public class Match
     {
         #region Properties
         /// <summary>
@@ -39,6 +39,18 @@ namespace ChessConsole.Game
         /// [PT] Define se a partida está terminada.
         /// </summary>
         public bool IsFinished { get; private set; }
+
+        /// <summary>
+        /// [EN] Match pieces in game.
+        /// [PT] Peças da partida em jogo.
+        /// </summary>
+        private HashSet<Piece> Pieces { get; set; }
+
+        /// <summary>
+        /// [EN] Match captured pieces.
+        /// [PT] Peças capturadas da partida.
+        /// </summary>
+        private HashSet<Piece> CapturedPieces { get; set; }
         #endregion Properties
 
         #region Constructor
@@ -48,6 +60,7 @@ namespace ChessConsole.Game
         /// </summary>
         public Match()
         {
+            CapturedPieces = new HashSet<Piece>();
             Board = new ChessBoard();
             Turn = 1;
             CurrentPlayer = Color.White;
@@ -67,6 +80,9 @@ namespace ChessConsole.Game
             Board.RemovePiece(piece.Position);
             Piece capturedPiece = Board.RemovePiece(to);
             Board.PlacePiece(piece, to);
+
+            if(capturedPiece != null)
+                CapturedPieces.Add(capturedPiece);
         }
 
         /// <summary>
@@ -119,6 +135,17 @@ namespace ChessConsole.Game
 
             if (!piece.IsMovePossible(position))
                 throw new BoardException("The chosen movement is not possible to this piece.");
+        }
+
+        /// <summary>
+        /// [EN] Gets all captured pieces from the given color.
+        /// [PT] Obtém todas as peças capturadas da cor fornecida.
+        /// </summary>
+        /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
+        /// <returns>[EN] All captured pieces from the given color. [PT] Todas as peças capturadas da cor fornecida.</returns>
+        public HashSet<Piece> GetCapturedPieces(Color color)
+        {
+            return CapturedPieces.Where(i => i.Color == color).ToHashSet();
         }
 
         /// <summary>
