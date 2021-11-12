@@ -23,6 +23,12 @@ namespace ChessConsole.Board
         /// [PT] Posição da peça no tabuleiro
         /// </summary>
         public Position Position { get; set; }
+
+        /// <summary>
+        /// [EN] Board associated to the piece.
+        /// [PT] Tabuleiro associado à peça.
+        /// </summary>
+        protected ChessBoard Board { get; set; }
         #endregion Properties
 
         #region Constructor
@@ -31,9 +37,11 @@ namespace ChessConsole.Board
         /// [PT] Cria uma nova instância da classe Piece.
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
-        public Piece(PieceColor color)
+        /// <param name="board">[EN] Board associated to the piece. [PT] abuleiro associado à peça.</param>
+        public Piece(PieceColor color, ChessBoard board)
         {
             Color = color;
+            Board = board;
         }
         #endregion Constructor
 
@@ -47,7 +55,30 @@ namespace ChessConsole.Board
         /// [EN] Matrix that represents the current board, where every true position is a possible move and every false position is an illegal move.
         /// [PT] Matriz que representa o tabuleiro atual, onde cada posição verdadeira é um movimento possível e cada posição falsa é um movimento ilegal
         /// </returns>
-        public abstract bool[,] PossibleMoves(ChessBoard board);
+        public abstract bool[,] PossibleMoves();
+
+        /// <summary>
+        /// [EN] Checks if there is any possible move to the current Piece.
+        /// [PT] Verifica se existe algum movimento possível para a peça atual.
+        /// </summary>
+        /// <returns>[EN] True if there is at least one possible move and false otherwise. [PT] True caso exista pelo menos um movimento possível e false caso contrário.</returns>
+        public bool AnyPossibleMove()
+        {
+            bool[,] possibleMoves = PossibleMoves();            
+
+            for (int i = 0; i < possibleMoves.GetLength(0); i++)
+            {
+                for (int j = 0; j < possibleMoves.GetLength(1); j++)
+                {
+                    if (possibleMoves[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// [EN] Checks if the movement is allowed to the given position.
@@ -56,12 +87,12 @@ namespace ChessConsole.Board
         /// <param name="board">[EN] Current board. [PT] Tabuleiro atual.</param>
         /// <param name="position">[EN] Position to move. [PT] Posição a mover peça.</param>
         /// <returns></returns>
-        protected bool IsMoveAllowed(ChessBoard board, Position position)
+        protected bool IsMoveAllowed(Position position)
         {
-            if (!board.ExistsPiece(position))
+            if (!Board.ExistsPiece(position))
                 return true;
 
-            return board.GetPiece(position).Color != Color;
+            return Board.GetPiece(position).Color != Color;
         }
         #endregion Methods
     }

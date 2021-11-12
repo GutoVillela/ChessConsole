@@ -18,7 +18,8 @@ namespace ChessConsole.Game
         /// [PT] Cria uma nova instância da classe Pawn.
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
-        public Pawn(PieceColor color) : base(color)
+        /// <param name="board">[EN] Board associated to the piece. [PT] Tabuleiro associado à peça.</param>
+        public Pawn(PieceColor color, ChessBoard board) : base(color, board)
         {
 
         }
@@ -30,7 +31,7 @@ namespace ChessConsole.Game
             return "P";
         }
 
-        public override bool[,] PossibleMoves(ChessBoard board)
+        public override bool[,] PossibleMoves()
         {
             throw new NotImplementedException();
         }

@@ -18,7 +18,8 @@ namespace ChessConsole.Game
         /// [PT] Cria uma nova instância da classe Rook.
         /// </summary>
         /// <param name="color">[EN] Piece color. [PT] Cor da peça.</param>
-        public Rook(PieceColor color) : base(color)
+        /// <param name="board">[EN] Board associated to the piece. [PT] Tabuleiro associado à peça.</param>
+        public Rook(PieceColor color, ChessBoard board) : base(color, board)
         {
 
         }
@@ -30,7 +31,7 @@ namespace ChessConsole.Game
             return "T";
         }
 
-        public override bool[,] PossibleMoves(ChessBoard board)
+        public override bool[,] PossibleMoves()
         {
             bool[,] possibleMoves = new bool[ChessBoard.ROWS, ChessBoard.COLUMNS];
             
@@ -38,13 +39,13 @@ namespace ChessConsole.Game
 
             // [EN] Check positions above. [PT] Checar posições acima.
             position = new Position(Position.Row - 1, Position.Column);
-            while(board.CheckPosition(position) && IsMoveAllowed(board, position))
+            while(Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
 
                 // [EN] Finish while when we find the first adversary piece on the allowed position
                 // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
                     break;
 
                 position.Row--;
@@ -52,13 +53,13 @@ namespace ChessConsole.Game
 
             // [EN] Check positions below. [PT] Checar posições abaixo
             position = new Position(Position.Row + 1, Position.Column);
-            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
 
                 // [EN] Finish while when we find the first adversary piece on the allowed position
                 // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
                     break;
 
                 position.Row++;
@@ -66,13 +67,13 @@ namespace ChessConsole.Game
 
             // [EN] Check right positions. [PT] Checar posições à direita
             position = new Position(Position.Row, Position.Column + 1);
-            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
 
                 // [EN] Finish while when we find the first adversary piece on the allowed position
                 // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
                     break;
 
                 position.Column++;
@@ -80,13 +81,13 @@ namespace ChessConsole.Game
 
             // [EN] Check left positions. [PT] Checar posições à esquerda
             position = new Position(Position.Row, Position.Column + 1);
-            while (board.CheckPosition(position) && IsMoveAllowed(board, position))
+            while (Board.CheckPosition(position) && IsMoveAllowed(position))
             {
                 possibleMoves[position.Row, position.Column] = true;
 
                 // [EN] Finish while when we find the first adversary piece on the allowed position
                 // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (board.ExistsPiece(position) && board.GetPiece(position).Color != Color)
+                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
                     break;
 
                 position.Column++;

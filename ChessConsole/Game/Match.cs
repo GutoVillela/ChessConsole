@@ -25,13 +25,13 @@ namespace ChessConsole.Game
         /// [EN] Game current turn.
         /// [PT] Turno atual do jogo.
         /// </summary>
-        public int Turn { get; set; }
+        public int Turn { get; private set; }
 
         /// <summary>
         /// [EN] Current turn player.
         /// [PT] Jogador do turno atual.
         /// </summary>
-        public PlayerColor CurrentPlayer { get; set; }
+        public PlayerColor CurrentPlayer { get; private set; }
 
         /// <summary>
         /// [EN] Defines if the match is finished.
@@ -66,6 +66,31 @@ namespace ChessConsole.Game
             Board.RemovePiece(piece.Position);
             Piece capturedPiece = Board.RemovePiece(to);
             Board.PlacePiece(piece, to);
+        }
+
+        /// <summary>
+        /// [EN] Performs a players movement.
+        /// [PT] Realiza o movimento de um jogador.
+        /// </summary>
+        /// <param name="piece">[EN] Piece to move. [PT] Peça a ser movida.</param>
+        /// <param name="to">[EN] Piece's new position. [PT] Nova posição da peça.</param>
+        public void PerformMovement(Piece piece, Position to)
+        {
+            MovePiece(piece, to);
+            Turn++;
+            ChangePlayer();
+        }
+
+        /// <summary>
+        /// [EN] Change current player.
+        /// [PT] Muda jogador atual.
+        /// </summary>
+        private void ChangePlayer()
+        {
+            if(CurrentPlayer == PlayerColor.White)
+                CurrentPlayer = PlayerColor.Black;
+            else
+                CurrentPlayer = PlayerColor.White;
         }
         #endregion Methods
     }

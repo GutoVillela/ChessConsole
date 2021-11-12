@@ -12,8 +12,8 @@ namespace ChessConsole
         {
             try
             {
-                Match match = new Match();
-                match.Board.PlacePiece(new Rook(Board.Enums.PieceColor.White), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
+                Match match = new();
+                match.Board.PlacePiece(new Rook(Board.Enums.PieceColor.White, match.Board), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
@@ -22,6 +22,9 @@ namespace ChessConsole
 
                     Console.WriteLine();
 
+                    Console.WriteLine($"Turn {match.Turn}.");
+                    Console.WriteLine($"Player {match.CurrentPlayer}.");
+
                     Console.Write("Choose a piece position: ");
                     Position fromPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
 
@@ -29,14 +32,14 @@ namespace ChessConsole
                         continue;
 
                     Console.Clear();
-                    bool [,] possibleMoves = match.Board.GetPiece(fromPosition).PossibleMoves(match.Board);
+                    bool [,] possibleMoves = match.Board.GetPiece(fromPosition).PossibleMoves();
 
                     Print.PrintBoard(match.Board, possibleMoves);
 
                     Console.Write("Enter a new position: ");
                     Position toPosition = Print.ReadChessPosition().ToPosition(ChessBoard.ROWS);
 
-                    match.MovePiece(match.Board.GetPiece(fromPosition), toPosition);
+                    match.PerformMovement(match.Board.GetPiece(fromPosition), toPosition);
 
                 }
                 while (!match.IsFinished);
