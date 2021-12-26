@@ -41,12 +41,6 @@ namespace ChessConsole.Game
         public bool IsFinished { get; private set; }
 
         /// <summary>
-        /// [EN] Match pieces in game.
-        /// [PT] Peças da partida em jogo.
-        /// </summary>
-        private HashSet<Piece> Pieces { get; set; }
-
-        /// <summary>
         /// [EN] Match captured pieces.
         /// [PT] Peças capturadas da partida.
         /// </summary>
@@ -74,28 +68,72 @@ namespace ChessConsole.Game
         /// </summary>
         /// <param name="piece">[EN] Piece to move. [PT] Peça a ser movida.</param>
         /// <param name="to">[EN] Piece's new position. [PT] Nova posição da peça.</param>
-        public void MovePiece(Piece piece, Position to)
+        /// <returns>[EN] Captured piece from the performed movemente or null if there was no piece captured. [PT] Peça capturada após movemente ou nulo caso não exista peça capturada.</returns>
+        public Piece MovePiece(Piece piece, Position to)
         {
-            // TODO Verify if the piece is a tower to increment a move
             Board.RemovePiece(piece.Position);
             Piece capturedPiece = Board.RemovePiece(to);
             Board.PlacePiece(piece, to);
 
             if(capturedPiece != null)
                 CapturedPieces.Add(capturedPiece);
+
+            // Verify if the piece is a tower to increment a move
+            if (piece is Rook)
+                (piece as Rook).MovesPerformed++;
+
+            return capturedPiece;
         }
 
         /// <summary>
         /// [EN] Performs a players movement.
         /// [PT] Realiza o movimento de um jogador.
         /// </summary>
-        /// <param name="piece">[EN] Piece to move. [PT] Peça a ser movida.</param>
+        /// <param name="from">[EN] Piece's current position. [PT] Posição atual da peça.</param>
         /// <param name="to">[EN] Piece's new position. [PT] Nova posição da peça.</param>
-        public void PerformMovement(Piece piece, Position to)
+        public void PerformMovement(Position from, Position to)
         {
-            MovePiece(piece, to);
+            Piece piece = Board.GetPiece(from);
+
+            var capturedPiece = MovePiece(piece, to);
+
+            if (IsInCheck(CurrentPlayer))
+            {
+                UndoMovement(from, to, capturedPiece);
+                throw new BoardException("Invalid movement: you can't put yourself in check.");
+            }
+
+            // [EN] Indicates if the adversary king is in check after the performed movement.
+            // [PT] Indica se o Rei adversário está em xeque depois do movimento realizado.
+            King adversaryKing = GetKing(GetAdversasyColor(CurrentPlayer));
+            adversaryKing.Check = IsInCheck(adversaryKing.Color);
+
             Turn++;
             ChangePlayer();
+        }
+
+        /// <summary>
+        /// [EN] Undoes a performed movement.
+        /// [PT] Desfaz o movimento realizado.
+        /// </summary>
+        /// <param name="piece">[EN] Moved piece's original position. [PT] Posição original da peça movida..</param>
+        /// <param name="to">[EN] Piece's new position. [PT] Nova posição da peça.</param>
+        /// <param name="capturedPiece">[EN] Captured piece after performed move. [PT] Peça capturada após movemento.</param>
+        public void UndoMovement(Position from, Position to, Piece capturedPiece)
+        {
+            Piece pieceMoved = Board.RemovePiece(to);
+
+            if (capturedPiece != null)
+            {
+                Board.PlacePiece(capturedPiece, to);
+                CapturedPieces.Remove(capturedPiece);
+            }
+
+            // Verify if the piece is a tower to decrement a move
+            if (pieceMoved is Rook)
+                (pieceMoved as Rook).MovesPerformed++;
+
+            Board.PlacePiece(pieceMoved, from);
         }
 
         /// <summary>
@@ -149,6 +187,48 @@ namespace ChessConsole.Game
         }
 
         /// <summary>
+        /// [EN] Gets the pieces from the given color the are still in game.
+        /// [PT] Obtém as peças da cor fornecida que ainda estão em jogo.
+        /// </summary>
+        /// <returns>[EN] Pieces the are still in game. [PT] Peças que ainda estão em jogo.</returns>
+        public HashSet<Piece> GetPiecesInGame(Color color)
+        {
+            HashSet<Piece> piecesInGame = new();
+
+            foreach (var item in Board.GetPiecesInGame())
+            {
+                if (item.Color == color)
+                    piecesInGame.Add(item);
+            }
+
+            return piecesInGame;
+        }
+
+        /// <summary>
+        /// [EN] Checks if the king from the given color is in check.
+        /// [PT] Verifica se o rei da posição fornecida está em xeque.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public bool IsInCheck(Color color)
+        {
+            King king = GetKing(color);
+
+            if (king is null)
+                throw new BoardException("There is no king from the given color on the board.");
+
+            foreach (Piece piece in GetPiecesInGame(GetAdversasyColor(color)))
+            {
+                bool[,] possibleMoves = piece.PossibleMoves();
+
+                if (possibleMoves[king.Position.Row, king.Position.Column])
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// [EN] Change current player.
         /// [PT] Muda jogador atual.
         /// </summary>
@@ -158,6 +238,37 @@ namespace ChessConsole.Game
                 CurrentPlayer = Color.Black;
             else
                 CurrentPlayer = Color.White;
+        }
+
+        /// <summary>
+        /// [EN] Gets the adversary color to the given color.
+        /// [PT] Obtém a cor adversáriA para a cor fornecida.
+        /// </summary>
+        /// <param name="color">[EN] Color. [PT] Cor.</param>
+        /// <returns>[EN] Adversary color. [PT] Cor adversária.</returns>
+        private Color GetAdversasyColor(Color color)
+        {
+            if(color == Color.White)
+                return Color.Black;
+
+            return Color.White;
+        }
+
+        /// <summary>
+        /// [EN] Gets the King Piece from the given color.
+        /// [PT] Obtém a peça Rei da cor fornecida.
+        /// </summary>
+        /// <param name="color">[EN] Color. [PT] Cor.</param>
+        /// <returns>[EN] King from the given color. [PT] Rei da cor fornecida.</returns>
+        private King GetKing(Color color)
+        {
+            foreach (Piece piece in Board.GetPiecesInGame())
+            {
+                if (piece is King && piece.Color == color)
+                    return piece as King;
+            }
+
+            return null;
         }
         #endregion Methods
     }

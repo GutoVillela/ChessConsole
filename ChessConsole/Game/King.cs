@@ -12,6 +12,14 @@ namespace ChessConsole.Game
     /// </summary>
     public class King : Piece
     {
+        #region Properties
+        /// <summary>
+        /// [EN] Indicates that the King is in check.
+        /// [PT] Indica que o Rei está em xeque.
+        /// </summary>
+        public bool Check { get; set; }
+        #endregion Properties
+
         #region Constructor
         /// <summary>
         /// [EN] Creates a new instance of the class King.
@@ -37,13 +45,16 @@ namespace ChessConsole.Game
             Position position;
 
             // [EN] Check all positions adjacent to the King. [PT] Checar todas as posições adjacentes ao rei
-            position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
-            if(Board.CheckPosition(position) && IsMoveAllowed(position))
-                possibleMoves[position.Row, position.Column] = true;
+            if(Position.Row > 0)
+            {
+                position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
+                if(Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column + 1));
-            if (Board.CheckPosition(position) && IsMoveAllowed(position))
-                possibleMoves[position.Row, position.Column] = true;
+                position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column + 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
             
             position = new Position(Position.Row, Convert.ToByte(Position.Column + 1));
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
@@ -53,17 +64,24 @@ namespace ChessConsole.Game
             if (Board.CheckPosition(position) && IsMoveAllowed(position))
                 possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column - 1));
-            if (Board.CheckPosition(position) && IsMoveAllowed(position))
-                possibleMoves[position.Row, position.Column] = true;
+            if(Position.Column > 0)
+            {
+                position = new Position(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column - 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Position.Row, Convert.ToByte(Position.Column - 1));
-            if (Board.CheckPosition(position) && IsMoveAllowed(position))
-                possibleMoves[position.Row, position.Column] = true;
+                position = new Position(Position.Row, Convert.ToByte(Position.Column - 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
 
-            position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column - 1));
-            if (Board.CheckPosition(position) && IsMoveAllowed(position))
-                possibleMoves[position.Row, position.Column] = true;
+                if(Position.Row > 0)
+                {
+                    position = new Position(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column - 1));
+                    if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                        possibleMoves[position.Row, position.Column] = true;
+                }
+            }
+
 
             return possibleMoves;
         }

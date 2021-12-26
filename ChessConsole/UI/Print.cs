@@ -208,12 +208,21 @@ namespace ChessConsole.UI
                     Console.Write(piece + " ");
                 else
                 {
+                    ConsoleColor originalBgColor = Console.BackgroundColor;
+
+                    if(piece is King)
+                    {
+                        if ((piece as King).Check)
+                            Console.BackgroundColor = ConsoleColor.Red;
+                    }
+
                     // [EN] Print black pieces in yellow
                     // [PT] Imprimir peças pretas em amarelo
                     ConsoleColor aux = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(piece);
                     Console.ForegroundColor = aux;
+                    Console.BackgroundColor = originalBgColor;
                     Console.Write(" ");
                 }
             }

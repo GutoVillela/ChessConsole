@@ -13,7 +13,9 @@ namespace ChessConsole
             try
             {
                 Match match = new();
-                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('A', 3).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('E', 3).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new King(Board.Enums.Color.Black, match.Board), new ChessPosition('F', 4).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new King(Board.Enums.Color.White, match.Board), new ChessPosition('A', 1).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
@@ -40,7 +42,7 @@ namespace ChessConsole
 
                         match.ValidateToPosition(match.Board.GetPiece(fromPosition), toPosition);
 
-                        match.PerformMovement(match.Board.GetPiece(fromPosition), toPosition);
+                        match.PerformMovement(fromPosition, toPosition);
                     }
                     catch(BoardException e)
                     {

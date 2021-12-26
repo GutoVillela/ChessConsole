@@ -12,6 +12,13 @@ namespace ChessConsole.Game
     /// </summary>
     public class Rook : Piece
     {
+        #region Properties
+        /// <summary>
+        /// Number of movements performed from this piece.
+        /// </summary>
+        public ushort MovesPerformed { get; set; }
+        #endregion Properties
+
         #region Constructor
         /// <summary>
         /// [EN] Creates a new instance of the class Rook.
@@ -38,17 +45,20 @@ namespace ChessConsole.Game
             Position position;
 
             // [EN] Check positions above. [PT] Checar posições acima.
-            position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
-            while(Board.CheckPosition(position) && IsMoveAllowed(position))
+            if(Position.Row > 0)
             {
-                possibleMoves[position.Row, position.Column] = true;
+                position = new Position(Convert.ToByte(Position.Row - 1), Position.Column);
+                while(Board.CheckPosition(position) && IsMoveAllowed(position))
+                {
+                    possibleMoves[position.Row, position.Column] = true;
 
-                // [EN] Finish while when we find the first adversary piece on the allowed position
-                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
-                    break;
+                    // [EN] Finish while when we find the first adversary piece on the allowed position
+                    // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                    if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
+                        break;
 
-                position.Row--;
+                    position.Row--;
+                }
             }
 
             // [EN] Check positions below. [PT] Checar posições abaixo
@@ -95,6 +105,15 @@ namespace ChessConsole.Game
 
 
             return possibleMoves;
+        }
+
+        /// <summary>
+        /// [EN] Checks if the piece has already made a move. [PT] Verifica se a peça já fez algum movimento.
+        /// </summary>
+        /// <returns>[EN] True if the piece has already moved and false otherwise. [PT] True se a peça já se moveu e falso caso contrário.</returns>
+        public bool Moved()
+        {
+            return MovesPerformed > 0;
         }
         #endregion Methods
     }

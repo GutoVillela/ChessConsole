@@ -1,5 +1,6 @@
 ﻿using ChessConsole.Board.Exceptions;
 using ChessConsole.Game;
+using System.Collections.Generic;
 
 namespace ChessConsole.Board
 {
@@ -39,7 +40,7 @@ namespace ChessConsole.Board
         /// </summary>
         public ChessBoard()
         {
-            ResetPieces();
+            //ResetPieces();
         }
         #endregion Constructor
 
@@ -56,6 +57,24 @@ namespace ChessConsole.Board
                 throw new BoardException($"There's no piece in the position {position}.");
 
             return Pieces[position.Row, position.Column]; 
+        }
+
+        /// <summary>
+        /// [EN] Gets the pieces the are still in game.
+        /// [PT] Obtém as peças que ainda estão em jogo.
+        /// </summary>
+        /// <returns>[EN] Pieces the are still in game. [PT] Peças que ainda estão em jogo.</returns>
+        public HashSet<Piece> GetPiecesInGame()
+        {
+            HashSet<Piece> piecesInGame = new();
+
+            foreach (var item in Pieces)
+            {
+                if(item != null)
+                    piecesInGame.Add(item);
+            }
+
+            return piecesInGame;
         }
 
         /// <summary>
