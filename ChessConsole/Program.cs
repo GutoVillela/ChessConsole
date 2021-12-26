@@ -13,9 +13,9 @@ namespace ChessConsole
             try
             {
                 Match match = new();
-                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('E', 3).ToPosition(ChessBoard.ROWS));
-                match.Board.PlacePiece(new King(Board.Enums.Color.Black, match.Board), new ChessPosition('F', 4).ToPosition(ChessBoard.ROWS));
-                match.Board.PlacePiece(new King(Board.Enums.Color.White, match.Board), new ChessPosition('A', 1).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('G', 1).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new King(Board.Enums.Color.Black, match.Board), new ChessPosition('A', 8).ToPosition(ChessBoard.ROWS));
+                match.Board.PlacePiece(new King(Board.Enums.Color.White, match.Board), new ChessPosition('C', 7).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
@@ -52,6 +52,10 @@ namespace ChessConsole
 
                 }
                 while (!match.IsFinished);
+
+                Console.Clear();
+                Print.PrintMatch(match);
+                Console.WriteLine($"Game's over! Winner: {match.CurrentPlayer}");
 
             }
             catch (BoardException ex)

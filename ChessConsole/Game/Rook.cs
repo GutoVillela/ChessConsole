@@ -90,17 +90,20 @@ namespace ChessConsole.Game
             }
 
             // [EN] Check left positions. [PT] Checar posições à esquerda
-            position = new Position(Position.Row, Convert.ToByte(Position.Column + 1));
-            while (Board.CheckPosition(position) && IsMoveAllowed(position))
+            if(Position.Column > 0)
             {
-                possibleMoves[position.Row, position.Column] = true;
+                position = new Position(Position.Row, Convert.ToByte(Position.Column - 1));
+                while (Board.CheckPosition(position) && IsMoveAllowed(position))
+                {
+                    possibleMoves[position.Row, position.Column] = true;
 
-                // [EN] Finish while when we find the first adversary piece on the allowed position
-                // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
-                if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
-                    break;
+                    // [EN] Finish while when we find the first adversary piece on the allowed position
+                    // [PT] Terinar while quando encontrarmos a primeira peça adversária em uma posição permitida
+                    if (Board.ExistsPiece(position) && Board.GetPiece(position).Color != Color)
+                        break;
 
-                position.Column++;
+                    position.Column--;
+                }
             }
 
 

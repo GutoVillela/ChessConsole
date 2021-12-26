@@ -108,6 +108,12 @@ namespace ChessConsole.Game
             King adversaryKing = GetKing(GetAdversasyColor(CurrentPlayer));
             adversaryKing.Check = IsInCheck(adversaryKing.Color);
 
+            if (IsCheckMate(GetAdversasyColor(CurrentPlayer)))
+            {
+                IsFinished = true;
+                return;
+            }
+
             Turn++;
             ChangePlayer();
         }
@@ -226,6 +232,43 @@ namespace ChessConsole.Game
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// [EN] Checks if the king from the given color is in check mate.
+        /// [PT] Verifica se o rei da posição fornecida está em xeque-mate.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public bool IsCheckMate(Color color)
+        {
+            if (!IsInCheck(color))
+                return false;
+
+            // Verify if any possible movement from the player's color could avoid check
+            foreach(Piece piece in GetPiecesInGame(color))
+            {
+                bool[,] piecePossibleMoves = piece.PossibleMoves();
+                for (byte i = 0; i < ChessBoard.ROWS; i++)
+                {
+                    for (byte j = 0; j < ChessBoard.COLUMNS; j++)
+                    {
+                        if(piecePossibleMoves[i, j])
+                        {
+                            Position pieceDestination = new Position(i, j);
+                            Position pieceOriginalPosition = piece.Position;
+                            Piece capturedPiece = MovePiece(piece, pieceDestination);
+                            bool stillInCheckAfterPieceMovement = IsInCheck(color);
+                            UndoMovement(pieceOriginalPosition, pieceDestination, capturedPiece);
+
+                            if (!stillInCheckAfterPieceMovement)
+                                return false; // There's a movement that avoids check mate.
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
