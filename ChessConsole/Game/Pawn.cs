@@ -1,6 +1,7 @@
 ﻿using ChessConsole.Board;
 using ChessConsole.Board.Enums;
 using ChessConsole.Board.Exceptions;
+using ChessConsole.Game.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ChessConsole.Game
     /// [EN] Represents a Pawn piece.
     /// [PT] Representa uma peça de Peão.
     /// </summary>
-    public class Pawn : Piece
+    public class Pawn : Piece, ICountableMovePiece
     {
         #region Constructor
         /// <summary>
@@ -27,9 +28,6 @@ namespace ChessConsole.Game
         #endregion Constructor
 
         #region Properties
-        /// <summary>
-        /// Number of movements performed from this piece.
-        /// </summary>
         public ushort MovesPerformed { get; set; }
         #endregion Properties
 

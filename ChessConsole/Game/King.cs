@@ -1,5 +1,6 @@
 ﻿using ChessConsole.Board;
 using ChessConsole.Board.Enums;
+using ChessConsole.Game.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace ChessConsole.Game
     /// [EN] Represents a King piece.
     /// [PT] Representa uma peça de Rei.
     /// </summary>
-    public class King : Piece
+    public class King : Piece, ICountableMovePiece
     {
         #region Properties
         /// <summary>
@@ -18,6 +19,7 @@ namespace ChessConsole.Game
         /// [PT] Indica que o Rei está em xeque.
         /// </summary>
         public bool Check { get; set; }
+        public ushort MovesPerformed { get; set; }
         #endregion Properties
 
         #region Constructor
@@ -82,6 +84,9 @@ namespace ChessConsole.Game
                 }
             }
 
+            #region Special move
+            
+            #endregion Special move
 
             return possibleMoves;
         }

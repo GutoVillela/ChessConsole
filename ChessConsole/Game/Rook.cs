@@ -1,5 +1,6 @@
 ﻿using ChessConsole.Board;
 using ChessConsole.Board.Enums;
+using ChessConsole.Game.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,12 +11,9 @@ namespace ChessConsole.Game
     /// [EN] Represents a Rook piece.
     /// [PT] Representa uma peça de Torre.
     /// </summary>
-    public class Rook : Piece
+    public class Rook : Piece, ICountableMovePiece
     {
         #region Properties
-        /// <summary>
-        /// Number of movements performed from this piece.
-        /// </summary>
         public ushort MovesPerformed { get; set; }
         #endregion Properties
 
