@@ -108,10 +108,6 @@ namespace ChessConsole.Game
             return possibleMoves;
         }
 
-        /// <summary>
-        /// [EN] Checks if the piece has already made a move. [PT] Verifica se a peça já fez algum movimento.
-        /// </summary>
-        /// <returns>[EN] True if the piece has already moved and false otherwise. [PT] True se a peça já se moveu e falso caso contrário.</returns>
         public bool Moved()
         {
             return MovesPerformed > 0;

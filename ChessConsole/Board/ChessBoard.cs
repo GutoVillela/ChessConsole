@@ -120,12 +120,12 @@ namespace ChessConsole.Board
 
             // [EN] Place white pieces. [PT] Posicionar peças brancas
             PlacePiece(new Rook(Enums.Color.White, this), new ChessPosition('A', 1).ToPosition(ROWS));
-            PlacePiece(new Knight(Enums.Color.White, this), new ChessPosition('B', 1).ToPosition(ROWS));
-            PlacePiece(new Bishop(Enums.Color.White, this), new ChessPosition('C', 1).ToPosition(ROWS));
-            PlacePiece(new Queen(Enums.Color.White, this), new ChessPosition('D', 1).ToPosition(ROWS));
+            //PlacePiece(new Knight(Enums.Color.White, this), new ChessPosition('B', 1).ToPosition(ROWS));
+            //PlacePiece(new Bishop(Enums.Color.White, this), new ChessPosition('C', 1).ToPosition(ROWS));
+            //PlacePiece(new Queen(Enums.Color.White, this), new ChessPosition('D', 1).ToPosition(ROWS));
             PlacePiece(new King(Enums.Color.White, this), new ChessPosition('E', 1).ToPosition(ROWS));
-            PlacePiece(new Bishop(Enums.Color.White, this), new ChessPosition('F', 1).ToPosition(ROWS));
-            PlacePiece(new Knight(Enums.Color.White, this), new ChessPosition('G', 1).ToPosition(ROWS));
+            //PlacePiece(new Bishop(Enums.Color.White, this), new ChessPosition('F', 1).ToPosition(ROWS));
+            //PlacePiece(new Knight(Enums.Color.White, this), new ChessPosition('G', 1).ToPosition(ROWS));
             PlacePiece(new Rook(Enums.Color.White, this), new ChessPosition('H', 1).ToPosition(ROWS));
             PlacePiece(new Pawn(Enums.Color.White, this), new ChessPosition('A', 2).ToPosition(ROWS));
             PlacePiece(new Pawn(Enums.Color.White, this), new ChessPosition('B', 2).ToPosition(ROWS));
@@ -138,12 +138,12 @@ namespace ChessConsole.Board
 
             // [EN] Place black pieces. [PT] Posicionar peças pretas.
             PlacePiece(new Rook(Enums.Color.Black, this), new ChessPosition('A', 8).ToPosition(ROWS));
-            PlacePiece(new Knight(Enums.Color.Black, this), new ChessPosition('B', 8).ToPosition(ROWS));
-            PlacePiece(new Bishop(Enums.Color.Black, this), new ChessPosition('C', 8).ToPosition(ROWS));
-            PlacePiece(new Queen(Enums.Color.Black, this), new ChessPosition('D', 8).ToPosition(ROWS));
+            //PlacePiece(new Knight(Enums.Color.Black, this), new ChessPosition('B', 8).ToPosition(ROWS));
+            //PlacePiece(new Bishop(Enums.Color.Black, this), new ChessPosition('C', 8).ToPosition(ROWS));
+            //PlacePiece(new Queen(Enums.Color.Black, this), new ChessPosition('D', 8).ToPosition(ROWS));
             PlacePiece(new King(Enums.Color.Black, this), new ChessPosition('E', 8).ToPosition(ROWS));
-            PlacePiece(new Bishop(Enums.Color.Black, this), new ChessPosition('F', 8).ToPosition(ROWS));
-            PlacePiece(new Knight(Enums.Color.Black, this), new ChessPosition('G', 8).ToPosition(ROWS));
+            //PlacePiece(new Bishop(Enums.Color.Black, this), new ChessPosition('F', 8).ToPosition(ROWS));
+            //PlacePiece(new Knight(Enums.Color.Black, this), new ChessPosition('G', 8).ToPosition(ROWS));
             PlacePiece(new Rook(Enums.Color.Black, this), new ChessPosition('H', 8).ToPosition(ROWS));
             PlacePiece(new Pawn(Enums.Color.Black, this), new ChessPosition('A', 7).ToPosition(ROWS));
             PlacePiece(new Pawn(Enums.Color.Black, this), new ChessPosition('B', 7).ToPosition(ROWS));

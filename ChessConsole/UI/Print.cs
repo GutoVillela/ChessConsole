@@ -212,7 +212,7 @@ namespace ChessConsole.UI
 
                     if(piece is King)
                     {
-                        if ((piece as King).Check)
+                        if ((piece as King).IsInCheck)
                             Console.BackgroundColor = ConsoleColor.Red;
                     }
 

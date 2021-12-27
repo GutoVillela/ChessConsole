@@ -131,6 +131,11 @@ namespace ChessConsole.Game
         {
             return !Board.ExistsPiece(position);
         }
+
+        public bool Moved()
+        {
+            return MovesPerformed > 0;
+        }
         #endregion Methods
     }
 }

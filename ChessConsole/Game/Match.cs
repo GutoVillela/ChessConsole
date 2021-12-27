@@ -1,6 +1,7 @@
 ﻿using ChessConsole.Board;
 using ChessConsole.Board.Enums;
 using ChessConsole.Board.Exceptions;
+using ChessConsole.Game.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,7 @@ namespace ChessConsole.Game
         /// <returns>[EN] Captured piece from the performed movemente or null if there was no piece captured. [PT] Peça capturada após movemente ou nulo caso não exista peça capturada.</returns>
         public Piece MovePiece(Piece piece, Position to)
         {
+            Position pieceOriginalPosition = new(piece.Position.Row, piece.Position.Column);
             Board.RemovePiece(piece.Position);
             Piece capturedPiece = Board.RemovePiece(to);
             Board.PlacePiece(piece, to);
@@ -78,15 +80,61 @@ namespace ChessConsole.Game
             if(capturedPiece != null)
                 CapturedPieces.Add(capturedPiece);
 
-            // Verify if the piece is a tower to increment a move
-            if (piece is Rook)
-                (piece as Rook).MovesPerformed++;
+            if(piece is ICountableMovePiece)
+                (piece as ICountableMovePiece).MovesPerformed++;
 
-            // Verify if the piece is a pawn to increment a move
-            if (piece is Pawn)
-                (piece as Pawn).MovesPerformed++;
+            // Check castling
+            if(IsCastleJustPerformed(piece, pieceOriginalPosition))
+            {
+                Rook rightRook = Board.RemovePiece(new Position(to.Row, Convert.ToByte(to.Column + 1))) as Rook;
+                Position rightRookDestination = new(to.Row, Convert.ToByte((to.Column - 1)));
+                Board.PlacePiece(rightRook, rightRookDestination);
+                rightRook.MovesPerformed++;
+            }
+
+            // Check big castling
+            if (IsBigCastleJustPerformed(piece, pieceOriginalPosition))
+            {
+                Rook lefttRook = Board.RemovePiece(new Position(to.Row, Convert.ToByte(to.Column - 2))) as Rook;
+                Position rightRookDestination = new(to.Row, Convert.ToByte((to.Column + 1)));
+                Board.PlacePiece(lefttRook, rightRookDestination);
+                lefttRook.MovesPerformed++;
+            }
+
 
             return capturedPiece;
+        }
+
+        /// <summary>
+        /// [EN] Checks if the position tha was just performed was a castle.
+        /// [PT] Verifica se o movimento recém-realizado foi um roque pequeno.
+        /// </summary>
+        /// <param name="piece">[EN] Piece that has just moved. [PT] Peça que acabou de se mover.</param>
+        /// <param name="originalPosition">[EN] Position before the piece's movement. [PT] Posição antes do movimento da peça.</param>
+        /// <returns></returns>
+        private bool IsCastleJustPerformed(Piece piece, Position originalPosition)
+        {
+            if (piece is not King)
+                return false;
+
+            return piece.Position.Column == originalPosition.Column + 2;
+                
+        }
+
+        /// <summary>
+        /// [EN] Checks if the position tha was just performed was a big castle.
+        /// [PT] Verifica se o movimento recém-realizado foi um roque grande.
+        /// </summary>
+        /// <param name="piece">[EN] Piece that has just moved. [PT] Peça que acabou de se mover.</param>
+        /// <param name="originalPosition">[EN] Position before the piece's movement. [PT] Posição antes do movimento da peça.</param>
+        /// <returns></returns>
+        private bool IsBigCastleJustPerformed(Piece piece, Position originalPosition)
+        {
+            if (piece is not King)
+                return false;
+
+            return piece.Position.Column == originalPosition.Column - 2;
+
         }
 
         /// <summary>
@@ -110,7 +158,7 @@ namespace ChessConsole.Game
             // [EN] Indicates if the adversary king is in check after the performed movement.
             // [PT] Indica se o Rei adversário está em xeque depois do movimento realizado.
             King adversaryKing = GetKing(GetAdversasyColor(CurrentPlayer));
-            adversaryKing.Check = IsInCheck(adversaryKing.Color);
+            adversaryKing.IsInCheck = IsInCheck(adversaryKing.Color);
 
             if (IsCheckMate(GetAdversasyColor(CurrentPlayer)))
             {
@@ -126,12 +174,13 @@ namespace ChessConsole.Game
         /// [EN] Undoes a performed movement.
         /// [PT] Desfaz o movimento realizado.
         /// </summary>
-        /// <param name="piece">[EN] Moved piece's original position. [PT] Posição original da peça movida..</param>
+        /// <param name="from">[EN] Moved piece's original position. [PT] Posição original da peça movida..</param>
         /// <param name="to">[EN] Piece's new position. [PT] Nova posição da peça.</param>
         /// <param name="capturedPiece">[EN] Captured piece after performed move. [PT] Peça capturada após movemento.</param>
         public void UndoMovement(Position from, Position to, Piece capturedPiece)
         {
             Piece pieceMoved = Board.RemovePiece(to);
+            pieceMoved.Position = to;// Recovery original position for validation
 
             if (capturedPiece != null)
             {
@@ -139,9 +188,26 @@ namespace ChessConsole.Game
                 CapturedPieces.Remove(capturedPiece);
             }
 
-            // Verify if the piece is a tower to decrement a move
-            if (pieceMoved is Rook)
-                (pieceMoved as Rook).MovesPerformed++;
+            // Check castling
+            if (IsCastleJustPerformed(pieceMoved, from))
+            {
+                Rook rightRook = Board.RemovePiece(new Position(to.Row, Convert.ToByte(to.Column - 1))) as Rook;
+                Position rightRookDestination = new(to.Row, Convert.ToByte((to.Column + 1)));
+                Board.PlacePiece(rightRook, rightRookDestination);
+                rightRook.MovesPerformed--;
+            }
+
+            // Check big castling
+            if (IsBigCastleJustPerformed(pieceMoved, from))
+            {
+                Rook lefttRook = Board.RemovePiece(new Position(to.Row, Convert.ToByte(to.Column + 1))) as Rook;
+                Position rightRookDestination = new(to.Row, Convert.ToByte(to.Column - 2));
+                Board.PlacePiece(lefttRook, rightRookDestination);
+                lefttRook.MovesPerformed--;
+            }
+
+            if (pieceMoved is ICountableMovePiece)
+                (pieceMoved as ICountableMovePiece).MovesPerformed--;
 
             Board.PlacePiece(pieceMoved, from);
         }
