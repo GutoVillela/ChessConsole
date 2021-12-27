@@ -33,7 +33,62 @@ namespace ChessConsole.Game
 
         public override bool[,] PossibleMoves()
         {
-            throw new NotImplementedException();
+            bool[,] possibleMoves = new bool[ChessBoard.ROWS, ChessBoard.COLUMNS];
+            Position position;
+
+            if(Position.Row > 0 && Position.Column > 1)
+            {
+                position = new(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column - 2));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+
+            }
+
+            if (Position.Row > 1 && Position.Column > 0)
+            {
+                position = new(Convert.ToByte(Position.Row - 2), Convert.ToByte(Position.Column - 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
+
+            if (Position.Row > 1)
+            {
+                position = new(Convert.ToByte(Position.Row - 2), Convert.ToByte(Position.Column + 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
+
+            if (Position.Row > 0)
+            {
+                position = new(Convert.ToByte(Position.Row - 1), Convert.ToByte(Position.Column + 2));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
+
+            position = new(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column + 2));
+            if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            position = new(Convert.ToByte(Position.Row + 2), Convert.ToByte(Position.Column + 1));
+            if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                possibleMoves[position.Row, position.Column] = true;
+
+            if (Position.Column > 0)
+            {
+                position = new(Convert.ToByte(Position.Row + 2), Convert.ToByte(Position.Column - 1));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
+
+            if (Position.Column > 1)
+            {
+                position = new(Convert.ToByte(Position.Row + 1), Convert.ToByte(Position.Column - 2));
+                if (Board.CheckPosition(position) && IsMoveAllowed(position))
+                    possibleMoves[position.Row, position.Column] = true;
+            }
+
+            return possibleMoves;
+
         }
         #endregion Methods
     }

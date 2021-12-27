@@ -153,7 +153,7 @@ namespace ChessConsole.UI
         public static ChessPosition ReadChessPosition()
         {
             string input = Console.ReadLine();
-            char column = input[0];
+            char column = Convert.ToChar(input.Substring(0, 1).ToUpper());
             byte row = Convert.ToByte(input[1].ToString());
             return new ChessPosition(column, row);
         }

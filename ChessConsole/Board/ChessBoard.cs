@@ -54,7 +54,7 @@ namespace ChessConsole.Board
         public Piece GetPiece(Position position)
         {
             if (!ExistsPiece(position))
-                throw new BoardException($"There's no piece in the position {position}.");
+                throw new BoardNoPieceFoundException($"There's no piece in the position {position}.");
 
             return Pieces[position.Row, position.Column]; 
         }

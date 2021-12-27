@@ -82,6 +82,10 @@ namespace ChessConsole.Game
             if (piece is Rook)
                 (piece as Rook).MovesPerformed++;
 
+            // Verify if the piece is a pawn to increment a move
+            if (piece is Pawn)
+                (piece as Pawn).MovesPerformed++;
+
             return capturedPiece;
         }
 

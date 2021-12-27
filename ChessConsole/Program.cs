@@ -13,9 +13,10 @@ namespace ChessConsole
             try
             {
                 Match match = new();
-                match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('G', 1).ToPosition(ChessBoard.ROWS));
-                match.Board.PlacePiece(new King(Board.Enums.Color.Black, match.Board), new ChessPosition('A', 8).ToPosition(ChessBoard.ROWS));
-                match.Board.PlacePiece(new King(Board.Enums.Color.White, match.Board), new ChessPosition('C', 7).ToPosition(ChessBoard.ROWS));
+                match.Board.ResetPieces();
+                //match.Board.PlacePiece(new Rook(Board.Enums.Color.White, match.Board), new ChessPosition('G', 1).ToPosition(ChessBoard.ROWS));
+                //match.Board.PlacePiece(new King(Board.Enums.Color.Black, match.Board), new ChessPosition('A', 8).ToPosition(ChessBoard.ROWS));
+                //match.Board.PlacePiece(new King(Board.Enums.Color.White, match.Board), new ChessPosition('C', 7).ToPosition(ChessBoard.ROWS));
 
                 do
                 {
