@@ -72,6 +72,23 @@ namespace ChessConsole.Game
                     if (Board.CheckPosition(position) && IsAnyEnemyOnGivenPosition(position))
                         possibleMoves[position.Row, position.Column] = true;
                 }
+
+                // [EN] Check En Passant. [PT] Verificar En Passant
+                if(Position.Row == 3)
+                {
+                    // Check left
+                    if(Position.Column > 0)
+                    {
+                        Position leftPosition = new(Position.Row, Convert.ToByte(Position.Column - 1));
+                        if(IsAnyEnemyOnGivenPosition(leftPosition) && Board.GetPiece(leftPosition) == Board.PawnVulnableToEnPassant)
+                            possibleMoves[Position.Row - 1, Position.Column - 1] = true;
+                    }
+
+                    // Check right
+                    Position rightPosition = new(Position.Row, Convert.ToByte(Position.Column + 1));
+                    if (IsAnyEnemyOnGivenPosition(rightPosition) && Board.GetPiece(rightPosition) == Board.PawnVulnableToEnPassant)
+                        possibleMoves[Position.Row - 1, Position.Column + 1] = true;
+                }
             }
             #endregion White
 
@@ -96,6 +113,23 @@ namespace ChessConsole.Game
                 position = new(Convert.ToByte(Position.Row -+ 1), Convert.ToByte(Position.Column + 1));
                 if (Board.CheckPosition(position) && IsAnyEnemyOnGivenPosition(position))
                     possibleMoves[position.Row, position.Column] = true;
+
+                // [EN] Check En Passant. [PT] Verificar En Passant
+                if (Position.Row == 4)
+                {
+                    // Check left
+                    if (Position.Column > 0)
+                    {
+                        Position leftPosition = new(Position.Row, Convert.ToByte(Position.Column - 1));
+                        if (IsAnyEnemyOnGivenPosition(leftPosition) && Board.GetPiece(leftPosition) == Board.PawnVulnableToEnPassant)
+                            possibleMoves[leftPosition.Row - 1, leftPosition.Column] = true;
+                    }
+
+                    // Check right
+                    Position rightPosition = new(Position.Row, Convert.ToByte(Position.Column + 1));
+                    if (IsAnyEnemyOnGivenPosition(rightPosition) && Board.GetPiece(rightPosition) == Board.PawnVulnableToEnPassant)
+                        possibleMoves[rightPosition.Row + 1, rightPosition.Column] = true;
+                }
             }
             #endregion Black
 

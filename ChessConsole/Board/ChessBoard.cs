@@ -31,6 +31,12 @@ namespace ChessConsole.Board
         /// </summary>
         private Piece[,] Pieces { get; set; } = new Piece[ROWS, COLUMNS];
 
+        /// <summary>
+        /// [EN] Pawn vulnerable to be captured by En Passant next turn.
+        /// [PT] Peão vulnerável a ser capturado por En Passant na próxima rodada.
+        /// </summary>
+        public Pawn PawnVulnableToEnPassant { get; set; }
+
         #endregion Properties
 
         #region Constructor

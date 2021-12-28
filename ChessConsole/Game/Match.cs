@@ -101,6 +101,22 @@ namespace ChessConsole.Game
                 lefttRook.MovesPerformed++;
             }
 
+            // Check En Passant
+            if(piece is Pawn)
+            {
+                if(pieceOriginalPosition.Column != piece.Position.Column && capturedPiece == null)
+                {
+                    Position pawnCapturedByEnPassant;
+                    if(piece.Color == Color.White)
+                        pawnCapturedByEnPassant = new(Convert.ToByte(piece.Position.Row + 1), piece.Position.Column);
+                    else
+                        pawnCapturedByEnPassant = new(Convert.ToByte(piece.Position.Row - 1), piece.Position.Column);
+
+                    capturedPiece = Board.RemovePiece(pawnCapturedByEnPassant);
+                    CapturedPieces.Add(capturedPiece);
+                }
+            }
+
 
             return capturedPiece;
         }
@@ -168,6 +184,15 @@ namespace ChessConsole.Game
 
             Turn++;
             ChangePlayer();
+
+            // [EN] Check En Passant. [PT] Verificar En Passant
+            Piece pieceMoved = Board.GetPiece(to);
+            if (pieceMoved is Pawn && ((from.Row > 1 && pieceMoved.Position.Row == from.Row - 2) || pieceMoved.Position.Row == from.Row + 2))
+            {
+                Board.PawnVulnableToEnPassant = pieceMoved as Pawn;
+            }
+            else
+                Board.PawnVulnableToEnPassant = null;
         }
 
         /// <summary>
@@ -208,6 +233,22 @@ namespace ChessConsole.Game
 
             if (pieceMoved is ICountableMovePiece)
                 (pieceMoved as ICountableMovePiece).MovesPerformed--;
+
+            // Check En Passant
+            if (pieceMoved is Pawn)
+            {
+                if (from.Column != pieceMoved.Position.Column && capturedPiece == Board.PawnVulnableToEnPassant)
+                {
+                    Position pawnPosition;
+                    if(pieceMoved.Color == Color.White)
+                        pawnPosition = new(3, to.Column);
+                    else
+                        pawnPosition = new(4, to.Column);
+
+                    Board.PlacePiece(pieceMoved, pawnPosition);
+
+                }
+            }
 
             Board.PlacePiece(pieceMoved, from);
         }
