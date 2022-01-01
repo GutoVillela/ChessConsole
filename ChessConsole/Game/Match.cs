@@ -117,6 +117,18 @@ namespace ChessConsole.Game
                 }
             }
 
+            // Check Pawn Promotion
+            if(piece is Pawn)
+            {
+                if((piece.Color == Color.White && to.Row == 0) || (piece.Color == Color.Black && to.Row == 7))
+                {
+                    //Promote Pawn
+                    Queen pawnPromotedToQueen = new(piece.Color, Board);
+                    Board.RemovePiece(to);
+                    Board.PlacePiece(pawnPromotedToQueen, to);
+                }
+            }
+
 
             return capturedPiece;
         }
@@ -162,8 +174,9 @@ namespace ChessConsole.Game
         public void PerformMovement(Position from, Position to)
         {
             Piece piece = Board.GetPiece(from);
-
             var capturedPiece = MovePiece(piece, to);
+
+            Piece pieceMoved = Board.GetPiece(to);
 
             if (IsInCheck(CurrentPlayer))
             {
@@ -185,8 +198,8 @@ namespace ChessConsole.Game
             Turn++;
             ChangePlayer();
 
+            
             // [EN] Check En Passant. [PT] Verificar En Passant
-            Piece pieceMoved = Board.GetPiece(to);
             if (pieceMoved is Pawn && ((from.Row > 1 && pieceMoved.Position.Row == from.Row - 2) || pieceMoved.Position.Row == from.Row + 2))
             {
                 Board.PawnVulnableToEnPassant = pieceMoved as Pawn;
