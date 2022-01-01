@@ -2,6 +2,9 @@
 
 Chess Console is a chess game aplication writen in C# whose main objective is to work out my object-oriented programming and Clean Code skills.
 
+![chess-console-demo](https://user-images.githubusercontent.com/32982475/147862350-3ba5da32-dccf-4434-90a0-de13c3b35add.gif)
+
+
 ## How to run the application
 
 Before starting, you will need to have the following tools installed on your computer:
@@ -16,10 +19,9 @@ $ git clone <https://github.com/GutoVillela/ChessConsole.git>
 
 # Go to the project folder and open the solution ChessConsole.sln
 
-Once this is done you're good to go!
-
-
 ```
+
+Once this is done you're good to go!
 
 # Chess Console - Descrição em Português
 
@@ -39,6 +41,6 @@ $ git clone <https://github.com/GutoVillela/ChessConsole.git>
 
 # Acesse a pasta do projeto e abra a solução ChessConsole.sln
 
-Feito isso basta você rodar a aplicação e ela estará pronta para ser executada.
-
 ```
+
+Feito isso basta você rodar a aplicação e ela estará pronta para ser executada.
